@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Student Dashboard</title>
+        <!-- <link rel="stylesheet" href="styles.css"> -->
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    </head>
+    <body>
+        <div class="container">
+            <header class="header">
+                <button class="back-btn" onclick="goBack()">Back</button>
+                <p id="welcomeMessage"></p>
+                <button class="home-btn" onclick="goHome()">Home</button>
+            </header>
+            <div class="profile-section">
+                <img
+                    src="student_final.jpg"
+                    alt="Profile"
+                    class="profile-pic"
+                />
+                <div class="profile-info">
+                    <h2>Profile</h2>
+                    <p id="profileName">Name:</p>
+                    <p id="profileGrade">Grade Level:</p>
+                    <p id="profileInterests">Interests:</p>
+                    <p id="profileAptitudes">Aptitudes:</p>
+                    <h3>Assessment History</h3>
+                    <div id="assessmentHistory"></div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button onclick="showAssignments()">Assignments</button>
+                <button onclick="showCourses()">Courses</button>
+                <button onclick="showAcademic()">Academic</button>
+                <button onclick="showLearningPath()">Learning Path</button>
+                <button onclick="showCareer()">Career Path</button>
+                <button onclick="showSkills()">Skills</button>
+            </div>
+            <div id="content"></div>
+        </div>
+        <script>
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get("id");
+            const userData = JSON.parse(
+                localStorage.getItem(`student-${userId}`),
+            );
+
+            if (userData) {
+                document.getElementById("welcomeMessage").innerText =
+                    `Welcome, ${userData.name}`;
+                document.getElementById("profileName").innerText +=
+                    userData.name;
+                document.getElementById("profileGrade").innerText +=
+                    userData.grade;
+                document.getElementById("profileInterests").innerText +=
+                    userData.interests.join(", ");
+                document.getElementById("profileAptitudes").innerText +=
+                    userData.aptitudes.join(", ");
+                userData.assessments.forEach((assessment) => {
+                    const assessmentEntry = document.createElement("p");
+                    assessmentEntry.innerText = `${assessment.date} - ${assessment.score}%`;
+                    document
+                        .getElementById("assessmentHistory")
+                        .appendChild(assessmentEntry);
+                });
+            } else {
+                alert("User  data not found.");
+            }
+
+            function goBack() {
+                window.location.href = "home.html";
+            }
+
+            function goHome() {
+                window.location.href = "index.html";
+            }
+
+            function showAssignments() {
+                document.getElementById("content").innerHTML =
+                    "<h3>Your Assignments</h3><p>Details about assignments...</p>";
+            }
+
+            function showCourses() {
+                document.getElementById("content").innerHTML =
+                    "<h3>Your Courses</h3><p>Details about courses...</p>";
+            }
+
+            function showAcademic() {
+                document.getElementById("content").innerHTML =
+                    "<h3>Academic Information</h3><p>Details about academic performance...</p>";
+            }
+
+            function showLearningPath() {
+                document.getElementById("content").innerHTML =
+                    "<h3>Your Learning Path</h3><p>Details about your learning path...</p>";
+            }
+
+            function showCareer() {
+                document.getElementById("content").innerHTML =
+                    "<h3>Career Path</h3><p>Details about career options...</p>";
+            }
+
+            function showSkills() {
+                document.getElementById("content").innerHTML =
+                    "<h3>Your Skills</h3><p>Details about your skills...</p>";
+            }
+        </script>
+    </body>
+</html>
