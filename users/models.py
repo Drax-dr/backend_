@@ -62,7 +62,6 @@ APTITUDE_CHOICES = [
 ]
 
 
-# Update the Student model to include the aptitudes field
 class Student(models.Model):
     name           = models.CharField(max_length=30)
     uid            = models.CharField(max_length=10, default=str(uuid.uuid4())[:8])
@@ -73,7 +72,7 @@ class Student(models.Model):
     profilePic     = models.ImageField(upload_to="users/assets/images")
     grade          = models.IntegerField(default=8)
 
-    # Add multiple aptitudes (similar to interests)
+    
     aptitudes      = models.CharField(
                         max_length=500,  # You can adjust the length as necessary
                         choices=APTITUDE_CHOICES,
@@ -99,7 +98,7 @@ class Student(models.Model):
 
 
     def save(self, *args, **kwargs):
-            # Hash the password before saving
+            
             if not str(self.password).startswith('pbkdf2_'):  # Prevent re-hashing if already hashed
                 self.password = make_password(self.password)
             super(Student, self).save(*args, **kwargs)
